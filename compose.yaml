@@ -1,0 +1,75 @@
+name: inviso-horizon
+services:
+  postgres:
+    image: postgres:18.6
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: horizon
+      POSTGRES_USER: horizon
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Renseigner POSTGRES_PASSWORD dans .env}
+    volumes:
+    - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    mem_limit: 512m
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: inviso-horizon-backend:local
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: '8080'
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/horizon
+      SPRING_DATASOURCE_USERNAME: horizon
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?Renseigner POSTGRES_PASSWORD
+        dans .env}
+      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: '10'
+      SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: '2'
+      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: '10000'
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_JPA_OPEN_IN_VIEW: 'false'
+      SPRING_FLYWAY_ENABLED: 'true'
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: health,info
+      MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: never
+      JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=60.0 -XX:+ExitOnOutOfMemoryError
+    mem_limit: 1g
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: inviso-horizon-frontend:local
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+    - 127.0.0.1:${FRONTEND_PORT:-8080}:80
+    mem_limit: 128m
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+volumes:
+  postgres_data: null
