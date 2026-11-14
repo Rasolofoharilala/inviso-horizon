@@ -25,7 +25,7 @@ services:
         max-file: '3'
   backend:
     build:
-      context: ./backend
+      context: ./Backend
       dockerfile: Dockerfile
     image: inviso-horizon-backend:local
     restart: unless-stopped
