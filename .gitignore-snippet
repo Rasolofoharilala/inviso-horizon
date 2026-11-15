@@ -1,0 +1,7 @@
+# Ajouter au .gitignore existant
+.env
+.env.*
+!.env.example
+**/node_modules/
+**/dist/
+**/target/
