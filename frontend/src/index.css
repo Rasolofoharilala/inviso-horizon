@@ -1,20 +1,35 @@
 @import "tailwindcss";
 
+/* Chargement des polices */
+
 @font-face {
   font-family: "Nunito";
-  src: url("/fonts/nunito-variable.woff2") format("woff2");
+  src: url("/fonts/Nunito/Nunito-VariableFont_wght.ttf")
+    format("truetype");
   font-style: normal;
   font-weight: 200 900;
   font-display: swap;
 }
 
 @font-face {
+  font-family: "Nunito";
+  src: url("/fonts/Nunito/Nunito-Italic-VariableFont_wght.ttf")
+    format("truetype");
+  font-style: italic;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Manrope";
-  src: url("/fonts/manrope-variable.woff2") format("woff2");
+  src: url("/fonts/Manrope/Manrope-VariableFont_wght.ttf")
+    format("truetype");
   font-style: normal;
   font-weight: 200 800;
   font-display: swap;
 }
+
+/* Styles globaux de l’application */
 
 :root {
   font-family: "Nunito", Arial, sans-serif;
@@ -32,7 +47,9 @@
 
 body {
   margin: 0;
+  font-family: "Nunito", Arial, sans-serif;
   font-size: 1rem;
+  line-height: 1.5;
 }
 
 button,
@@ -45,7 +62,9 @@ textarea {
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5,
+h6 {
   font-family: "Manrope", "Nunito", Arial, sans-serif;
   line-height: 1.3;
 }
