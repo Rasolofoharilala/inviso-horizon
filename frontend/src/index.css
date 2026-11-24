@@ -1,33 +1,123 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Nunito";
+  src: url("/fonts/Nunito/Nunito-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("/fonts/Nunito/Nunito-Italic-VariableFont_wght.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/Manrope/Manrope-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+}
+
 :root {
+  /* Marque AGRIFARM : valeurs extraites du JPEG fourni. */
+  --color-brand-green: #39b44a;
+  --color-brand-brown: #7c5627;
+  --color-green-dark: #195c35;
+  --color-green-hover: #124529;
+  --color-brown-dark: #603e1c;
+  --color-brown-hover: #482d14;
   --color-mint: #d6e7dc;
   --color-charcoal: #212121;
-  --color-green: #217346;
   --color-cream: #fffff0;
   --color-black: #121113;
 
+  /* Roles communs : changer la palette ici met a jour toutes les pages. */
+  --color-green: var(--color-brand-green);
   --color-background: var(--color-cream);
+  --color-surface: var(--color-cream);
   --color-surface-secondary: var(--color-mint);
-
   --color-text: var(--color-charcoal);
+  --color-text-muted: #40463f;
   --color-heading: var(--color-black);
-
-  --color-sidebar-background: var(--color-charcoal);
+  --color-border: #a4b5a5;
+  --color-border-strong: #596b59;
+  --color-hover: var(--color-mint);
+  --color-focus: var(--color-green-dark);
+  --color-sidebar-background: var(--color-green-hover);
   --color-sidebar-text: var(--color-cream);
-
-  --color-button-background: var(--color-charcoal);
+  --color-sidebar-muted: var(--color-mint);
+  --color-sidebar-hover: var(--color-green-dark);
+  --color-sidebar-active: var(--color-charcoal);
+  --color-login-background: var(--color-mint);
+  --color-login-intro-background: var(--color-green-dark);
+  --color-login-intro-text: var(--color-cream);
+  --color-login-panel-background: var(--color-cream);
+  --color-input-background: var(--color-cream);
+  --color-link: var(--color-green-dark);
+  --color-link-hover: var(--color-green-hover);
+  --color-button-background: var(--color-green-dark);
+  --color-button-hover: var(--color-green-hover);
   --color-button-text: var(--color-cream);
+  --color-danger: var(--color-brown-dark);
+  --color-danger-hover: var(--color-brown-hover);
+  --color-success-background: var(--color-mint);
+  --color-success-text: var(--color-green-hover);
+  --color-warning-background: var(--color-cream);
+  --color-warning-text: var(--color-brown-dark);
+  --color-chart-revenue: var(--color-green-dark);
+  --color-chart-expenses: var(--color-brand-brown);
+  --color-shadow: rgb(18 17 19 / 25%);
+  --color-backdrop: rgb(18 17 19 / 55%);
+
+  font-family: "Nunito", Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.5;
+  color: var(--color-text);
+  background: var(--color-background);
 }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-size: 1rem;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Manrope", "Nunito", Arial, sans-serif;
+  line-height: 1.3;
+}
+
+p { line-height: 1.6; }
+
+a { color: var(--color-link); }
+a:hover { color: var(--color-link-hover); }
 
 .app-loading {
   display: grid;
   place-items: center;
   min-height: 100dvh;
   padding: 24px;
-  background: var(--color-background, #fffff0);
-  color: var(--color-text, #212121);
+  background: var(--color-background);
+  color: var(--color-text);
   text-align: center;
 }
 
-.app-loading p {
-  max-width: 40ch;
-}
+.app-loading p { max-width: 40ch; }

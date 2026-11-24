@@ -2,8 +2,8 @@
   display: grid;
   grid-template-columns: 288px minmax(0, 1fr);
   min-height: 100dvh;
-  background: #f6f6ed;
-  color: #222221;
+  background: var(--color-background);
+  color: var(--color-text);
   font-family: "Nunito", Arial, sans-serif;
 }
 
@@ -30,12 +30,12 @@
 }
 
 .home-main:focus-visible {
-  outline: 3px solid #222221;
+  outline: 3px solid var(--color-text);
   outline-offset: -6px;
 }
 
 .home-eyebrow {
-  color: #55554d;
+  color: var(--color-text-muted);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 2px;
@@ -48,16 +48,16 @@
 }
 
 .home-header p {
-  color: #55554d;
+  color: var(--color-text-muted);
   line-height: 1.6;
 }
 
 .home-test-card {
   margin-top: 36px;
   padding: 28px;
-  border: 1px solid #deded2;
+  border: 1px solid var(--color-border);
   border-radius: 16px;
-  background: #fffff0;
+  background: var(--color-surface);
 }
 
 .home-test-card h2 {
@@ -77,10 +77,10 @@
   left: 12px;
   z-index: 1000;
   padding: 12px 20px;
-  border: 3px solid #222221;
+  border: 3px solid var(--color-text);
   border-radius: 8px;
-  background: #fffff0;
-  color: #222221;
+  background: var(--color-surface);
+  color: var(--color-text);
   font-weight: 700;
   transform: translateY(-200%);
 }
@@ -111,13 +111,13 @@
 
 .page-skeleton-status {
   margin: 0 0 24px;
-  color: var(--color-text, #212121);
+  color: var(--color-text);
   font-size: 1rem;
 }
 
 .skeleton-block {
   border-radius: 12px;
-  background: var(--color-mint, #d6e7dc);
+  background: var(--color-mint);
 }
 
 .skeleton-title {

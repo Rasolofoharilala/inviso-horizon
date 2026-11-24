@@ -1,5 +1,5 @@
 .dashboard {
-  color: #222221;
+  color: var(--color-text);
 }
 
 .dashboard-header,
@@ -15,7 +15,7 @@
 }
 
 .dashboard-eyebrow {
-  color: #66665d;
+  color: var(--color-text-muted);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 2px;
@@ -30,7 +30,7 @@
 .dashboard-header p,
 .dashboard-card-header p {
   margin: 0;
-  color: #66665d;
+  color: var(--color-text-muted);
   font-size: 14px;
   line-height: 1.5;
 }
@@ -49,17 +49,17 @@
 .dashboard-filter select {
   min-height: 42px;
   padding: 10px 36px 10px 14px;
-  border: 1px solid #cecec1;
+  border: 1px solid var(--color-border-strong);
   border-radius: 8px;
-  background: #fffff0;
-  color: #222221;
+  background: var(--color-surface);
+  color: var(--color-text);
   font: inherit;
   font-size: 14px;
 }
 
 .dashboard-demo {
   margin: 20px 0;
-  color: #66665d;
+  color: var(--color-text-muted);
   font-size: 12px;
 }
 
@@ -73,9 +73,9 @@
 .dashboard-kpi,
 .dashboard-card {
   min-width: 0;
-  border: 1px solid #deded2;
+  border: 1px solid var(--color-border);
   border-radius: 16px;
-  background: #fffff0;
+  background: var(--color-surface);
 }
 
 .dashboard-kpi {
@@ -84,7 +84,7 @@
 
 .dashboard-kpi h2 {
   margin: 0;
-  color: #66665d;
+  color: var(--color-text-muted);
   font-size: 13px;
   font-weight: 500;
 }
@@ -97,7 +97,7 @@
 }
 
 .dashboard-kpi > span {
-  color: #77776d;
+  color: var(--color-text-muted);
   font-size: 12px;
 }
 
@@ -139,16 +139,16 @@
 }
 
 .legend-revenue {
-  background: #333b30;
+  background: var(--color-chart-revenue);
 }
 
 .legend-expenses {
-  background: #b8bca6;
+  background: var(--color-chart-expenses);
 }
 
 .dashboard-chart-note {
   margin: 12px 0 0;
-  color: #66665d;
+  color: var(--color-text-muted);
   font-size: 11px;
 }
 
@@ -170,13 +170,13 @@
   justify-content: center;
   gap: 6px;
   height: 190px;
-  border-bottom: 1px solid #d7d7ca;
+  border-bottom: 1px solid var(--color-border);
   background: repeating-linear-gradient(
     to top,
     transparent 0,
     transparent 46px,
-    #eaeade 46px,
-    #eaeade 47px
+    var(--color-hover) 46px,
+    var(--color-hover) 47px
   );
 }
 
@@ -187,17 +187,17 @@
 }
 
 .dashboard-bar--revenue {
-  background: #333b30;
+  background: var(--color-chart-revenue);
 }
 
 .dashboard-bar--expenses {
-  background: #b8bca6;
+  background: var(--color-chart-expenses);
 }
 
 .dashboard-chart-column > span {
   display: block;
   margin-top: 12px;
-  color: #66665d;
+  color: var(--color-text-muted);
   font-size: 11px;
 }
 
@@ -232,11 +232,11 @@
   height: 9px;
   margin-top: 5px;
   border-radius: 50%;
-  background: #627458;
+  background: var(--color-green-dark);
 }
 
 .dashboard-dot--warning {
-  background: #b07d28;
+  background: var(--color-brand-brown);
 }
 
 .dashboard-attention h3 {
@@ -247,7 +247,7 @@
 
 .dashboard-attention p {
   margin: 0;
-  color: #66665d;
+  color: var(--color-text-muted);
   font-size: 13px;
   line-height: 1.6;
 }
@@ -271,11 +271,11 @@
 .dashboard-table th,
 .dashboard-table td {
   padding: 16px 12px;
-  border-bottom: 1px solid #e3e3d7;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .dashboard-table th {
-  color: #66665d;
+  color: var(--color-text-muted);
   font-size: 12px;
   font-weight: 600;
 }
@@ -288,20 +288,20 @@
   display: inline-block;
   padding: 6px 10px;
   border-radius: 20px;
-  background: #e8eedf;
-  color: #3d552e;
+  background: var(--color-success-background);
+  color: var(--color-success-text);
   font-size: 11px;
   white-space: nowrap;
 }
 
 .dashboard-badge--warning {
-  background: #f4ead2;
-  color: #79551a;
+  background: var(--color-warning-background);
+  color: var(--color-warning-text);
 }
 
 .dashboard select:focus-visible,
 .dashboard summary:focus-visible {
-  outline: 2px solid #222221;
+  outline: 3px solid var(--color-focus);
   outline-offset: 3px;
 }
 
@@ -339,3 +339,5 @@
     gap: 6px;
   }
 }
+.dashboard-kpi { border-top: 4px solid var(--color-brand-green); }
+.dashboard-badge--warning { border: 1px solid var(--color-brand-brown); }
