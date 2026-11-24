@@ -1,0 +1,48 @@
+/* Styles limités au sandbox ; toutes les couleurs viennent de la palette globale. */
+.sandbox { min-height: 100dvh; padding: clamp(16px, 3vw, 48px); background: var(--color-background); color: var(--color-text); }
+.sandbox-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+.sandbox h1 { margin: 16px 0 8px; font-size: clamp(24px, 3vw, 36px); }
+.sandbox-header p, .sandbox-instructions, .sandbox-caption { color: var(--color-text-muted); line-height: 1.6; }
+.sandbox button, .sandbox select, .sandbox input { min-height: 48px; padding: 10px 12px; border: 1px solid var(--color-border-strong); border-radius: 8px; background: var(--color-surface); color: var(--color-text); font: inherit; }
+.sandbox button { cursor: pointer; }
+.sandbox button:hover:not(:disabled) { background: var(--color-mint); }
+.sandbox button:disabled { cursor: not-allowed; border-style: dashed; }
+.sandbox :is(button, input, select, a):focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+.sandbox-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.sandbox-status { min-height: 24px; margin: 16px 0; }
+.sandbox-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; gap: 20px; padding: 20px; border: 1px solid var(--color-border); border-radius: 16px; }
+.sandbox-grid--editing { background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px); background-size: 20px 20px; }
+.sandbox-panel { min-width: 0; border: 1px solid var(--color-border-strong); border-radius: 12px; background: var(--color-surface); }
+.sandbox-panel--dragged { outline: 3px dashed var(--color-focus); outline-offset: 3px; }
+.sandbox-panel-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--color-border); }
+.sandbox-panel-header h2 { flex: 1; min-width: 0; margin: 0; font-size: 1rem; overflow-wrap: anywhere; }
+.sandbox-panel-header button { min-width: 48px; font-size: 24px; }
+.sandbox-grip { display: grid; place-items: center; width: 48px; min-height: 48px; cursor: grab; font-size: 28px; }
+.sandbox-panel-settings { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 12px; padding: 16px; border-bottom: 1px solid var(--color-border); }
+.sandbox-panel-settings label { display: flex; flex-direction: column; gap: 6px; min-width: 0; font-size: 0.875rem; }
+.sandbox-panel-settings :is(input, select) { width: 100%; min-width: 0; }
+.sandbox-order { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; }
+.sandbox-panel-content { padding: 20px; }
+.sandbox-kpi { display: grid; gap: 16px; }
+.sandbox-kpi strong { font-size: clamp(24px, 2.5vw, 36px); overflow-wrap: anywhere; color: var(--color-text); }
+.sandbox-chart { display: flex; align-items: flex-end; justify-content: space-around; gap: 16px; min-height: 200px; }
+.sandbox-chart > div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.sandbox-bar { width: clamp(20px, 4vw, 48px); background: var(--color-green-dark); border-radius: 6px 6px 0 0; }
+.sandbox-caption { margin-bottom: 0; font-size: 0.875rem; }
+.sandbox-table-scroll { overflow-x: auto; }
+.sandbox table { width: 100%; border-collapse: collapse; text-align: left; }
+.sandbox caption { padding-bottom: 12px; text-align: left; }
+.sandbox th, .sandbox td { padding: 12px; border-bottom: 1px solid var(--color-border); }
+.sandbox-empty { grid-column: 1 / -1; }
+@media (max-width: 900px) { .sandbox-grid > .sandbox-panel { grid-column: 1 / -1 !important; } }
+@media (max-width: 480px) { .sandbox-grid { padding: 8px; } .sandbox-panel-content { padding: 12px; } }
+
+/* Dimensions réelles : le contenu défile à l'intérieur de chaque fenêtre. */
+.sandbox-panel { position: relative; display: flex; flex-direction: column; }
+.sandbox-panel-header { flex-shrink: 0; }
+.sandbox-panel-settings { flex-shrink: 0; max-height: 50%; overflow-y: auto; }
+.sandbox-panel-content { flex: 1; min-height: 0; overflow: auto; padding-bottom: 48px; }
+.sandbox-add-choice { display: flex; flex-direction: column; gap: 6px; }
+.sandbox-toolbar { align-items: flex-end; }
+.sandbox .sandbox-resize { position: absolute; right: 2px; bottom: 2px; display: grid; place-items: center; min-width: 48px; min-height: 48px; padding: 0; cursor: nwse-resize; touch-action: none; color: var(--color-green-dark); background: var(--color-surface); }
+@media (max-width: 900px) { .sandbox .sandbox-resize { cursor: ns-resize; } }
