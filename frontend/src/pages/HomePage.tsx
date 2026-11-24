@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import Sidebar from '../components/Sidebar'
-import { navigation } from '../config/navigation'
+import { getNavigationModules, navigation } from '../config/navigation'
 import './HomePage.css'
 
 function PageSkeleton() {
@@ -34,6 +34,8 @@ export default function HomePage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const mainRef = useRef<HTMLElement>(null)
   const { pathname } = useLocation()
+  const activeModule = getNavigationModules().find((module) => module.items.some((item) => item.path === pathname))
+  const panelOpen = Boolean(activeModule && activeModule.items.length > 1 && !sidebarCollapsed)
 
   useEffect(() => {
     const page = navigation.find((item) => item.path === pathname)
@@ -46,7 +48,7 @@ export default function HomePage() {
   return (
     <div
       className={`home-layout ${
-        sidebarCollapsed ? 'home-layout--collapsed' : ''
+        panelOpen ? 'home-layout--panel-open' : 'home-layout--collapsed'
       }`}
     >
       <a className="skip-link" href="#main-content">

@@ -1,0 +1,15 @@
+.loading-screen { display: grid; grid-template-rows: 1fr auto; min-height: 100dvh; padding: 32px 24px; background: var(--color-loading-background); color: var(--color-loading-text); text-align: center; }
+.loading-screen-content { align-self: center; justify-self: center; width: min(100%, 480px); padding: 32px 0; }
+.loading-screen-logo { display: block; width: 160px; max-width: 100%; height: auto; margin: 0 auto 32px; }
+.loading-screen-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 24px; }
+.loading-screen-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--color-loading-text); }
+.loading-screen-message { margin: 0; font-size: 1.125rem; font-weight: 700; line-height: 1.6; overflow-wrap: anywhere; }
+.loading-screen-help { margin: 16px 0 0; color: var(--color-text-muted); line-height: 1.6; }
+.loading-screen-signature { margin: 0; color: var(--color-text-muted); font-size: 0.875rem; line-height: 1.6; }
+.loading-screen-retry { min-width: 140px; min-height: 48px; margin-top: 24px; padding: 12px 20px; border: 1px solid var(--color-button-background); border-radius: 10px; background: var(--color-button-background); color: var(--color-button-text); font: inherit; font-weight: 700; cursor: pointer; }
+.loading-screen-retry:hover { background: var(--color-button-hover); }
+.loading-screen-retry:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 4px; }
+@media (forced-colors: active) {
+  .loading-screen-dots span { background: CanvasText; }
+  .loading-screen-retry:focus-visible { outline-color: Highlight; }
+}

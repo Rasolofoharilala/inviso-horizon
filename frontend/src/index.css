@@ -27,6 +27,8 @@
   font-display: swap;
 }
 :root {
+  --color-loading-background: var(--color-cream);
+  --color-loading-text: var(--color-green-dark);
   /* Marque AGRIFARM : valeurs extraites du JPEG fourni. */
   --color-brand-green: #39b44a;
   --color-brand-brown: #7c5627;
@@ -129,3 +131,15 @@ a:hover { color: var(--color-link-hover); }
 }
 
 .app-loading p { max-width: 40ch; }
+
+
+/* Navigation a deux niveaux : palette centralisee. */
+:root {
+  --color-nav-rail: var(--color-green-hover);
+  --color-nav-rail-text: var(--color-cream);
+  --color-nav-active: var(--color-charcoal);
+  --color-nav-panel: var(--color-cream);
+  --color-nav-selected: var(--color-mint);
+  --color-nav-border: var(--color-border);
+  --color-nav-backdrop: var(--color-backdrop);
+}

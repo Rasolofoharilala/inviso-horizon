@@ -93,3 +93,12 @@ export const navigation: NavigationItem[] = [
     visible: true,
   },
 ]
+
+// Les groupes visibles deviennent automatiquement les modules du rail.
+export function getNavigationModules() {
+  const visible = navigation.filter((item) => item.visible)
+  return [...new Set(visible.map((item) => item.group))].map((group) => {
+    const items = visible.filter((item) => item.group === group)
+    return { id: group, label: group, icon: items[0].icon, items }
+  })
+}

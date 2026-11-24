@@ -1,6 +1,6 @@
 .home-layout {
   display: grid;
-  grid-template-columns: 288px minmax(0, 1fr);
+  grid-template-columns: 80px minmax(0, 1fr);
   min-height: 100dvh;
   background: var(--color-background);
   color: var(--color-text);
@@ -158,4 +158,11 @@
   .skeleton-cards {
     grid-template-columns: 1fr;
   }
+}
+
+/* Rail permanent de 80 px + panneau contextuel de 240 px. */
+.home-layout--panel-open { grid-template-columns: 320px minmax(0, 1fr); }
+@media (max-width: 800px) {
+  .home-layout, .home-layout--collapsed, .home-layout--panel-open { grid-template-columns: minmax(0, 1fr); }
+  .home-main { height: auto; overflow: visible; }
 }

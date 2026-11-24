@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import {
   BrowserRouter,
   Link,
@@ -6,8 +6,11 @@ import {
   Route,
   Routes,
   useNavigate,
+  useSearchParams,
 } from 'react-router'
 import LoginPage from './pages/LoginPage'
+import LoadingScreen from './components/LoadingScreen'
+import LoadingBoundary from './components/LoadingBoundary'
 import PlaceholderPage from './pages/PlaceholderPage'
 import { navigation } from './config/navigation'
 
@@ -17,12 +20,27 @@ const ProductsPage = lazy(() => import('./pages/ProductsPage'))
 
 function LoginRoute() {
   const navigate = useNavigate()
+  const [params] = useSearchParams()
 
   return (
     <LoginPage
-      onLogin={() => navigate('/accueil', { replace: true })}
+      onLogin={() => navigate(params.get('testLoading') === '1' ? '/apercu-chargement' : '/accueil', { replace: true })}
     />
   )
+}
+
+// Seul cet aperçu volontaire impose un délai ; le parcours normal reste immédiat.
+function LoadingPreview() {
+  const navigate = useNavigate()
+  const [params] = useSearchParams()
+  const failed = params.get('erreur') === '1'
+  useEffect(() => {
+    document.title = 'Ouverture — Horizon'
+    if (failed) return
+    const timer = window.setTimeout(() => navigate('/accueil', { replace: true }), 4000)
+    return () => window.clearTimeout(timer)
+  }, [failed, navigate])
+  return <LoadingScreen error={failed} onRetry={() => navigate('/apercu-chargement', { replace: true })} />
 }
 
 function NotFoundPage() {
@@ -38,16 +56,12 @@ function NotFoundPage() {
 export default function App() {
   return (
     <BrowserRouter>
-      <Suspense
-        fallback={
-          <main className="app-loading">
-            <p role="status">Chargement de votre espace Horizon…</p>
-          </main>
-        }
-      >
+      <LoadingBoundary>
+      <Suspense fallback={<LoadingScreen />}>
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginRoute />} />
+          <Route path="/apercu-chargement" element={<LoadingPreview />} />
 
           <Route element={<HomePage />}>
             {navigation.map((item) => (
@@ -70,6 +84,7 @@ export default function App() {
           </Route>
         </Routes>
       </Suspense>
+      </LoadingBoundary>
     </BrowserRouter>
   )
 }

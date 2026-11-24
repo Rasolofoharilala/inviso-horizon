@@ -1,7 +1,8 @@
+import { useRef } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router'
-import { navigation } from '../config/navigation'
-import logoNavbar from '../assets/logo-navbar.svg'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router'
+import { getNavigationModules } from '../config/navigation'
+import type { NavigationItem } from '../config/navigation'
 import './Sidebar.css'
 
 type IconName =
@@ -49,144 +50,136 @@ function Icon({ name }: { name: IconName }) {
   )
 }
 
+
 type SidebarProps = {
   collapsed: boolean
   setCollapsed: Dispatch<SetStateAction<boolean>>
 }
 
-export default function Sidebar({
-  collapsed,
-  setCollapsed,
-}: SidebarProps) {
+export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
+  const { pathname } = useLocation()
   const navigate = useNavigate()
+  const mobileDialog = useRef<HTMLDialogElement>(null)
+  const panelToggle = useRef<HTMLButtonElement>(null)
+  const modules = getNavigationModules()
+  const activeModule = modules.find((module) =>
+    module.items.some((item) => item.path === pathname),
+  )
+  const hasPanel = Boolean(activeModule && activeModule.items.length > 1)
+  const panelOpen = hasPanel && !collapsed
 
-  const visibleItems = navigation.filter((item) => item.visible)
-
-  const groups = [
-    ...new Set(
-      visibleItems
-        .filter((item) => item.group !== 'Compte')
-        .map((item) => item.group),
-    ),
-  ]
-
-  function renderItem(item: (typeof navigation)[number]) {
+  function renderLink(item: NavigationItem) {
     return (
       <li key={item.path}>
         <NavLink
           to={item.path}
           end
-          title={collapsed ? item.label : undefined}
-          aria-label={item.label}
-          className={({ isActive }) =>
-            `sidebar-item ${isActive ? 'sidebar-item--active' : ''}`
-          }
+          className={({ isActive }) => `sidebar-page ${isActive ? 'sidebar-page--active' : ''}`}
+          onClick={() => mobileDialog.current?.close()}
         >
-          {({ isActive }) => (
-            <>
-              <Icon name={item.icon} />
-              <span className="sidebar-label">{item.label}</span>
-
-              {isActive && (
-                <span className="sidebar-selected" aria-hidden="true">
-                  ●
-                </span>
-              )}
-            </>
-          )}
+          <Icon name={item.icon} />
+          <span>{item.label}</span>
+          <span className="sidebar-page-check" aria-hidden="true">✓</span>
         </NavLink>
       </li>
     )
   }
 
+  function togglePanel() {
+    if (window.matchMedia('(max-width: 800px)').matches) {
+      mobileDialog.current?.showModal()
+    } else {
+      setCollapsed((value) => !value)
+    }
+  }
+
   return (
-    <aside
-      className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}
-      aria-label="Navigation Horizon"
-    >
-      <header className="sidebar-header">
-        <Link
-          className="sidebar-brand"
-          to="/accueil"
-          aria-label="Horizon — aller à l’accueil"
-        >
-          <img
-            src={collapsed ? '/favicon.svg?v=2' : logoNavbar}
-            alt=""
-            className={
-              collapsed ? 'sidebar-brand-icon' : 'sidebar-brand-logo'
-            }
-          />
+    <aside className="sidebar" aria-label="Navigation Horizon">
+      <div className="sidebar-rail">
+        <Link className="rail-control sidebar-brand" to="/accueil" aria-label="Horizon — accueil" title="Horizon — accueil">
+          <img src="/favicon.svg?v=2" alt="" width="36" height="36" />
         </Link>
 
-        <button
-          className="sidebar-collapse"
-          type="button"
-          aria-label={
-            collapsed ? 'Agrandir la navigation' : 'Réduire la navigation'
-          }
-          title={
-            collapsed ? 'Agrandir la navigation' : 'Réduire la navigation'
-          }
-          aria-expanded={!collapsed}
-          aria-controls="horizon-navigation"
-          onClick={() => setCollapsed((current) => !current)}
-        >
-          <Icon name="collapse" />
-        </button>
-      </header>
-
-      <nav
-        id="horizon-navigation"
-        className="sidebar-nav"
-        aria-label="Navigation principale"
-      >
-        {groups.map((group) => (
-          <section
-            className="sidebar-group"
-            key={group}
-            aria-label={group}
-          >
-            <h2 className="sidebar-group-title">{group}</h2>
-
-            <ul className="sidebar-list">
-              {visibleItems
-                .filter((item) => item.group === group)
-                .map(renderItem)}
-            </ul>
-          </section>
-        ))}
-      </nav>
-
-      <footer className="sidebar-footer">
-        <div className="sidebar-profile" title="Utilisateur 1">
-          <span className="sidebar-avatar" aria-hidden="true">U</span>
-          <span className="sidebar-label">Utilisateur 1</span>
-
-          {collapsed && (
-            <span className="sidebar-sr-only">Utilisateur 1</span>
-          )}
-        </div>
-
-        <nav aria-label="Compte utilisateur">
-          <ul className="sidebar-list">
-            {visibleItems
-              .filter((item) => item.group === 'Compte')
-              .map(renderItem)}
+        <nav className="rail-navigation" aria-label="Modules">
+          <ul className="rail-list">
+            {modules.filter((module) => module.id !== 'Compte').map((module) => {
+              const active = module.id === activeModule?.id
+              return (
+                <li key={module.id}>
+                  <Link
+                    to={module.items[0].path}
+                    className={`rail-control ${active ? 'rail-control--active' : ''}`}
+                    aria-label={module.label}
+                    title={module.label}
+                    aria-current={active ? 'location' : undefined}
+                    onClick={() => {
+                      if (!active) setCollapsed(false)
+                    }}
+                  >
+                    <Icon name={module.icon} />
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
         </nav>
 
-        <button
-          className="sidebar-item sidebar-logout"
-          type="button"
-          title={collapsed ? 'Se déconnecter' : undefined}
-          aria-label="Se déconnecter"
-          onClick={() => navigate('/login', { replace: true })}
-        >
-          <Icon name="logout" />
-          <span className="sidebar-label">Se déconnecter</span>
-        </button>
-      </footer>
+        {hasPanel && (
+          <button
+            ref={panelToggle}
+            className="rail-control sidebar-panel-toggle"
+            type="button"
+            aria-label={panelOpen ? 'Masquer les sous-pages' : 'Afficher les sous-pages'}
+            title="Afficher ou masquer les sous-pages"
+            aria-expanded={panelOpen}
+            aria-controls="sidebar-desktop-panel"
+            onClick={togglePanel}
+          >
+            <Icon name="collapse" />
+          </button>
+        )}
+        {hasPanel && (
+          <button className="rail-control sidebar-mobile-toggle" type="button" aria-label="Ouvrir les sous-pages" aria-haspopup="dialog" aria-controls="sidebar-mobile-dialog" onClick={togglePanel}>
+            <Icon name="collapse" />
+          </button>
+        )}
+
+        <div className="rail-footer">
+          <div className="rail-profile" title="Utilisateur 1" aria-label="Utilisateur 1">U</div>
+          {modules.filter((module) => module.id === 'Compte').map((module) => (
+            <Link key={module.id} to={module.items[0].path} className={`rail-control ${activeModule?.id === module.id ? 'rail-control--active' : ''}`} aria-label={module.label} title={module.label}>
+              <Icon name="settings" />
+            </Link>
+          ))}
+          <button className="rail-control rail-logout" type="button" aria-label="Se déconnecter" title="Se déconnecter" onClick={() => navigate('/login', { replace: true })}>
+            <Icon name="logout" />
+          </button>
+        </div>
+      </div>
+
+      {hasPanel && (
+        <section id="sidebar-desktop-panel" className="sidebar-secondary" hidden={!panelOpen} aria-labelledby="sidebar-panel-title">
+          <header className="sidebar-secondary-header">
+            <div>
+              <span className="sidebar-panel-eyebrow">HORIZON</span>
+              <h2 id="sidebar-panel-title">{activeModule?.label}</h2>
+            </div>
+            <button type="button" className="sidebar-panel-close" aria-label="Masquer les sous-pages" onClick={() => { setCollapsed(true); panelToggle.current?.focus() }}>×</button>
+          </header>
+          <nav aria-label={`Pages — ${activeModule?.label}`}>
+            <ul className="sidebar-page-list">{activeModule?.items.map(renderLink)}</ul>
+          </nav>
+          <p className="sidebar-panel-note">Une vision claire.<br />Des décisions éclairées.</p>
+        </section>
+      )}
+
+      <dialog ref={mobileDialog} id="sidebar-mobile-dialog" className="sidebar-mobile-dialog" aria-labelledby="sidebar-mobile-title">
+        <header className="sidebar-secondary-header">
+          <h2 id="sidebar-mobile-title">{activeModule?.label ?? 'Navigation'}</h2>
+          <button type="button" className="sidebar-panel-close" aria-label="Fermer les sous-pages" onClick={() => mobileDialog.current?.close()}>×</button>
+        </header>
+        <nav aria-label="Sous-pages du module"><ul className="sidebar-page-list">{activeModule?.items.map(renderLink)}</ul></nav>
+      </dialog>
     </aside>
   )
 }
