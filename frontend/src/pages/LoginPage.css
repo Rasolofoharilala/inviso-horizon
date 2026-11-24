@@ -11,7 +11,7 @@
   padding: 12px;
   background: #111110;
   color: var(--login-dark);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Nunito", Arial, sans-serif;
 }
 
 .login-intro,
