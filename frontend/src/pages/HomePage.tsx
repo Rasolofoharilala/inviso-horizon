@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import './HomePage.css'
+import ProductsPage from './ProductsPage'
 
 type HomePageProps = {
   onLogout: () => void
@@ -18,21 +19,24 @@ export default function HomePage({ onLogout }: HomePageProps) {
       />
 
       <main className="home-main">
-        <header className="home-header">
-          <span className="home-eyebrow">ESPACE HORIZON</span>
-          <h1>{activePage}</h1>
-          <p>Une vision claire. Des décisions éclairées.</p>
-        </header>
+       {activePage === 'Données' ? (
+  <ProductsPage />
+) : (
+  <>
+    <header className="home-header">
+      <span className="home-eyebrow">ESPACE HORIZON</span>
+      <h1>{activePage}</h1>
+      <p>Une vision claire. Des décisions éclairées.</p>
+    </header>
 
-        <section className="home-test-card" aria-labelledby="test-title">
-          <h2 id="test-title">Navigation opérationnelle</h2>
-          <p>
-            Vous consultez actuellement : <strong>{activePage}</strong>.
-          </p>
-          <p>
-            Cette zone accueillera le contenu de la page sélectionnée.
-          </p>
-        </section>
+    <section className="home-test-card">
+      <h2>Navigation opérationnelle</h2>
+      <p>
+        Vous consultez actuellement : <strong>{activePage}</strong>.
+      </p>
+    </section>
+  </>
+)}
       </main>
     </div>
   )

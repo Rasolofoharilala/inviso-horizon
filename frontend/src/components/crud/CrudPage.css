@@ -1,0 +1,298 @@
+.crud-page {
+  color: #222221;
+}
+
+.crud-header,
+.crud-toolbar,
+.crud-actions,
+.crud-row-actions,
+.crud-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.crud-header,
+.crud-toolbar,
+.crud-modal-header {
+  justify-content: space-between;
+}
+
+.crud-header,
+.crud-toolbar {
+  flex-wrap: wrap;
+}
+
+.crud-header h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.crud-header p {
+  margin: 0;
+  color: #66665d;
+  line-height: 1.5;
+}
+
+.crud-button {
+  min-height: 38px;
+  padding: 9px 14px;
+  border: 1px solid #d1d1c5;
+  border-radius: 8px;
+  background: transparent;
+  color: #222221;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.crud-button:hover {
+  background: #eaeade;
+}
+
+.crud-button--primary {
+  border-color: #222221;
+  background: #222221;
+  color: #fffff0;
+}
+
+.crud-button--primary:hover {
+  background: #3b3b39;
+}
+
+.crud-button--delete {
+  color: #a12424;
+}
+
+.crud-button--danger {
+  border-color: #a12424;
+  background: #a12424;
+  color: #fff;
+}
+
+.crud-button--danger:hover {
+  background: #831c1c;
+}
+
+.crud-status {
+  min-height: 24px;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+/* Fenêtre d'ajout et de modification */
+
+.crud-modal {
+  position: fixed;
+  inset: 0;
+  width: min(640px, calc(100% - 32px));
+  max-height: calc(100dvh - 48px);
+  margin: auto;
+  padding: 0;
+  overflow-y: auto;
+  border: none;
+  border-radius: 16px;
+  background: #fffff0;
+  color: #222221;
+  font-family: inherit;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 25%);
+}
+
+.crud-modal::backdrop {
+  background: rgb(0 0 0 / 50%);
+  backdrop-filter: blur(3px);
+}
+
+.crud-form-panel {
+  padding: 28px;
+}
+
+.crud-modal-header {
+  margin-bottom: 24px;
+}
+
+.crud-modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.crud-close {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #222221;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.crud-close:hover {
+  background: #eaeade;
+}
+
+.crud-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.crud-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.crud-field label,
+.crud-search-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.crud-field input,
+.crud-search {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #b7b7aa;
+  border-radius: 8px;
+  background: #fffffa;
+  color: #222221;
+  font: inherit;
+  font-size: 14px;
+}
+
+.crud-error {
+  margin: 16px 0 0;
+  color: #a12424;
+  font-size: 13px;
+}
+
+.crud-actions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+/* Confirmation de suppression */
+
+.crud-delete-panel {
+  margin-bottom: 24px;
+  padding: 24px;
+  border: 1px solid #deded2;
+  border-radius: 14px;
+  background: #fffff0;
+}
+
+.crud-delete-panel h2 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.crud-delete-panel p {
+  line-height: 1.6;
+}
+
+/* Recherche et tableau */
+
+.crud-table-panel {
+  margin-bottom: 24px;
+  overflow: hidden;
+  border: 1px solid #deded2;
+  border-radius: 14px;
+  background: #fffff0;
+}
+
+.crud-toolbar {
+  padding: 20px;
+}
+
+.crud-search-field {
+  width: min(100%, 360px);
+}
+
+.crud-search-label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.crud-total {
+  color: #66665d;
+  font-size: 13px;
+}
+
+.crud-table-scroll {
+  overflow-x: auto;
+}
+
+.crud-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.crud-table th,
+.crud-table td {
+  padding: 16px 20px;
+  border-top: 1px solid #e1e1d5;
+}
+
+.crud-table th {
+  background: #efefe4;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.crud-table tbody tr:hover {
+  background: #f6f6eb;
+}
+
+.crud-row-actions {
+  flex-wrap: nowrap;
+}
+
+.crud-table .crud-empty {
+  padding: 40px 20px;
+  color: #66665d;
+  text-align: center;
+}
+
+.crud-page button:focus-visible,
+.crud-page input:focus-visible {
+  outline: 2px solid #222221;
+  outline-offset: 3px;
+}
+
+.crud-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .crud-header h1 {
+    font-size: 26px;
+  }
+
+  .crud-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .crud-form-panel,
+  .crud-delete-panel {
+    padding: 20px;
+  }
+}
