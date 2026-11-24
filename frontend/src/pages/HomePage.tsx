@@ -1,11 +1,38 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import Sidebar from '../components/Sidebar'
-import DashboardPage from './DashboardPage'
-import ProductsPage from './ProductsPage'
 import './HomePage.css'
+
+const DashboardPage = lazy(() => import('./DashboardPage'))
+const ProductsPage = lazy(() => import('./ProductsPage'))
 
 type HomePageProps = {
   onLogout: () => void
+}
+
+function PageSkeleton() {
+  return (
+    <div className="page-skeleton" aria-busy="true">
+      <p className="page-skeleton-status" role="status">
+        Chargement de la page…
+      </p>
+
+      <div aria-hidden="true">
+        <div className="skeleton-block skeleton-title" />
+        <div className="skeleton-block skeleton-description" />
+
+        <div className="skeleton-cards">
+          {Array.from({ length: 4 }, (_, index) => (
+            <div
+              className="skeleton-block skeleton-card"
+              key={index}
+            />
+          ))}
+        </div>
+
+        <div className="skeleton-block skeleton-content" />
+      </div>
+    </div>
+  )
 }
 
 export default function HomePage({ onLogout }: HomePageProps) {
@@ -35,41 +62,49 @@ export default function HomePage({ onLogout }: HomePageProps) {
         className="home-main"
         tabIndex={-1}
       >
-        {activePage === 'Données' ? (
-          <ProductsPage />
-        ) : activePage === 'Vue générale' ? (
-          <DashboardPage />
-        ) : (
-          <>
-            <header className="home-header">
-              <span className="home-eyebrow">ESPACE HORIZON</span>
-              <h1>{activePage}</h1>
-              <p>Une vision claire. Des décisions éclairées.</p>
-            </header>
+        <Suspense fallback={<PageSkeleton />}>
+          {activePage === 'Données' ? (
+            <ProductsPage />
+          ) : activePage === 'Vue générale' ? (
+            <DashboardPage />
+          ) : (
+            <>
+              <header className="home-header">
+                <span className="home-eyebrow">
+                  ESPACE HORIZON
+                </span>
 
-            <section
-              className="home-test-card"
-              aria-labelledby="home-section-title"
-            >
-              <h2 id="home-section-title">
-                {activePage === 'Accueil'
-                  ? 'Bienvenue sur Horizon'
-                  : 'Page en préparation'}
-              </h2>
+                <h1>{activePage}</h1>
 
-              <p>
-                Vous consultez actuellement :{' '}
-                <strong>{activePage}</strong>.
-              </p>
+                <p>
+                  Une vision claire. Des décisions éclairées.
+                </p>
+              </header>
 
-              <p>
-                {activePage === 'Accueil'
-                  ? 'Sélectionnez Vue générale pour consulter le dashboard ou Données pour gérer les produits.'
-                  : 'Le contenu de cette page sera disponible prochainement.'}
-              </p>
-            </section>
-          </>
-        )}
+              <section
+                className="home-test-card"
+                aria-labelledby="home-section-title"
+              >
+                <h2 id="home-section-title">
+                  {activePage === 'Accueil'
+                    ? 'Bienvenue sur Horizon'
+                    : 'Page en préparation'}
+                </h2>
+
+                <p>
+                  Vous consultez actuellement :{' '}
+                  <strong>{activePage}</strong>.
+                </p>
+
+                <p>
+                  {activePage === 'Accueil'
+                    ? 'Sélectionnez Vue générale pour consulter le dashboard ou Données pour gérer les produits.'
+                    : 'Le contenu de cette page sera disponible prochainement.'}
+                </p>
+              </section>
+            </>
+          )}
+        </Suspense>
       </main>
     </div>
   )
