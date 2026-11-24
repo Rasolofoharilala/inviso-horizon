@@ -1,17 +1,12 @@
-import { lazy, Suspense, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
+import { Outlet, useLocation } from 'react-router'
 import Sidebar from '../components/Sidebar'
+import { navigation } from '../config/navigation'
 import './HomePage.css'
-
-const DashboardPage = lazy(() => import('./DashboardPage'))
-const ProductsPage = lazy(() => import('./ProductsPage'))
-
-type HomePageProps = {
-  onLogout: () => void
-}
 
 function PageSkeleton() {
   return (
-    <div className="page-skeleton" aria-busy="true">
+    <div className="page-skeleton">
       <p className="page-skeleton-status" role="status">
         Chargement de la page…
       </p>
@@ -35,9 +30,18 @@ function PageSkeleton() {
   )
 }
 
-export default function HomePage({ onLogout }: HomePageProps) {
-  const [activePage, setActivePage] = useState('Accueil')
+export default function HomePage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const mainRef = useRef<HTMLElement>(null)
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    const page = navigation.find((item) => item.path === pathname)
+    document.title = `${page?.label ?? 'Page introuvable'} — Horizon`
+
+    mainRef.current?.scrollTo(0, 0)
+    mainRef.current?.focus()
+  }, [pathname])
 
   return (
     <div
@@ -50,60 +54,18 @@ export default function HomePage({ onLogout }: HomePageProps) {
       </a>
 
       <Sidebar
-        activePage={activePage}
-        onNavigate={setActivePage}
-        onLogout={onLogout}
         collapsed={sidebarCollapsed}
         setCollapsed={setSidebarCollapsed}
       />
 
       <main
+        ref={mainRef}
         id="main-content"
         className="home-main"
         tabIndex={-1}
       >
         <Suspense fallback={<PageSkeleton />}>
-          {activePage === 'Données' ? (
-            <ProductsPage />
-          ) : activePage === 'Vue générale' ? (
-            <DashboardPage />
-          ) : (
-            <>
-              <header className="home-header">
-                <span className="home-eyebrow">
-                  ESPACE HORIZON
-                </span>
-
-                <h1>{activePage}</h1>
-
-                <p>
-                  Une vision claire. Des décisions éclairées.
-                </p>
-              </header>
-
-              <section
-                className="home-test-card"
-                aria-labelledby="home-section-title"
-              >
-                <h2 id="home-section-title">
-                  {activePage === 'Accueil'
-                    ? 'Bienvenue sur Horizon'
-                    : 'Page en préparation'}
-                </h2>
-
-                <p>
-                  Vous consultez actuellement :{' '}
-                  <strong>{activePage}</strong>.
-                </p>
-
-                <p>
-                  {activePage === 'Accueil'
-                    ? 'Sélectionnez Vue générale pour consulter le dashboard ou Données pour gérer les produits.'
-                    : 'Le contenu de cette page sera disponible prochainement.'}
-                </p>
-              </section>
-            </>
-          )}
+          <Outlet />
         </Suspense>
       </main>
     </div>

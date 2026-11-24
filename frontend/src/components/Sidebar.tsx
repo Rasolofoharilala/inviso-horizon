@@ -1,4 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react'
+import { Link, NavLink, useNavigate } from 'react-router'
+import { navigation } from '../config/navigation'
 import logoNavbar from '../assets/logo-navbar.svg'
 import './Sidebar.css'
 
@@ -48,60 +50,53 @@ function Icon({ name }: { name: IconName }) {
 }
 
 type SidebarProps = {
-  activePage: string
-  onNavigate: (page: string) => void
-  onLogout: () => void
   collapsed: boolean
   setCollapsed: Dispatch<SetStateAction<boolean>>
 }
 
-const groups: {
-  label: string
-  items: { label: string; icon: IconName }[]
-}[] = [
-  {
-    label: 'Navigation',
-    items: [{ label: 'Accueil', icon: 'home' }],
-  },
-  {
-    label: 'Espaces de travail',
-    items: [
-      { label: 'Vue générale', icon: 'dashboard' },
-      { label: 'Comparaison', icon: 'compare' },
-    ],
-  },
-  {
-    label: 'Gestion',
-    items: [
-      { label: 'Données', icon: 'data' },
-      { label: 'Alertes', icon: 'alerts' },
-      { label: 'Historique', icon: 'history' },
-    ],
-  },
-  {
-    label: 'Rapports',
-    items: [
-      { label: 'Rapport mensuel', icon: 'report' },
-      { label: 'Rapport annuel', icon: 'report' },
-    ],
-  },
-]
-
 export default function Sidebar({
-  activePage,
-  onNavigate,
-  onLogout,
   collapsed,
   setCollapsed,
 }: SidebarProps) {
-  function navigate(page: string) {
-    onNavigate(page)
+  const navigate = useNavigate()
 
-    // La navigation actuelle remplace le contenu sans changer d'URL.
-    // On place donc le focus sur ce nouveau contenu.
-    requestAnimationFrame(() => {
-      document.getElementById('main-content')?.focus()
-    })
+  const visibleItems = navigation.filter((item) => item.visible)
+
+  const groups = [
+    ...new Set(
+      visibleItems
+        .filter((item) => item.group !== 'Compte')
+        .map((item) => item.group),
+    ),
+  ]
+
+  function renderItem(item: (typeof navigation)[number]) {
+    return (
+      <li key={item.path}>
+        <NavLink
+          to={item.path}
+          end
+          title={collapsed ? item.label : undefined}
+          aria-label={item.label}
+          className={({ isActive }) =>
+            `sidebar-item ${isActive ? 'sidebar-item--active' : ''}`
+          }
+        >
+          {({ isActive }) => (
+            <>
+              <Icon name={item.icon} />
+              <span className="sidebar-label">{item.label}</span>
+
+              {isActive && (
+                <span className="sidebar-selected" aria-hidden="true">
+                  ●
+                </span>
+              )}
+            </>
+          )}
+        </NavLink>
+      </li>
+    )
   }
 
   return (
@@ -110,12 +105,10 @@ export default function Sidebar({
       aria-label="Navigation Horizon"
     >
       <header className="sidebar-header">
-        <button
+        <Link
           className="sidebar-brand"
-          type="button"
+          to="/accueil"
           aria-label="Horizon — aller à l’accueil"
-          title="Horizon — accueil"
-          onClick={() => navigate('Accueil')}
         >
           <img
             src={collapsed ? '/favicon.svg?v=2' : logoNavbar}
@@ -124,7 +117,7 @@ export default function Sidebar({
               collapsed ? 'sidebar-brand-icon' : 'sidebar-brand-logo'
             }
           />
-        </button>
+        </Link>
 
         <button
           className="sidebar-collapse"
@@ -151,39 +144,15 @@ export default function Sidebar({
         {groups.map((group) => (
           <section
             className="sidebar-group"
-            key={group.label}
-            aria-label={group.label}
+            key={group}
+            aria-label={group}
           >
-            <h2 className="sidebar-group-title">{group.label}</h2>
+            <h2 className="sidebar-group-title">{group}</h2>
 
             <ul className="sidebar-list">
-              {group.items.map((item) => {
-                const active = activePage === item.label
-
-                return (
-                  <li key={item.label}>
-                    <button
-                      className={`sidebar-item ${
-                        active ? 'sidebar-item--active' : ''
-                      }`}
-                      type="button"
-                      aria-label={item.label}
-                      aria-current={active ? 'page' : undefined}
-                      title={collapsed ? item.label : undefined}
-                      onClick={() => navigate(item.label)}
-                    >
-                      <Icon name={item.icon} />
-                      <span className="sidebar-label">{item.label}</span>
-
-                      {active && (
-                        <span className="sidebar-selected" aria-hidden="true">
-                          ●
-                        </span>
-                      )}
-                    </button>
-                  </li>
-                )
-              })}
+              {visibleItems
+                .filter((item) => item.group === group)
+                .map(renderItem)}
             </ul>
           </section>
         ))}
@@ -193,34 +162,26 @@ export default function Sidebar({
         <div className="sidebar-profile" title="Utilisateur 1">
           <span className="sidebar-avatar" aria-hidden="true">U</span>
           <span className="sidebar-label">Utilisateur 1</span>
+
           {collapsed && (
             <span className="sidebar-sr-only">Utilisateur 1</span>
           )}
         </div>
 
-        <button
-          className={`sidebar-item ${
-            activePage === 'Paramètres' ? 'sidebar-item--active' : ''
-          }`}
-          type="button"
-          aria-label="Paramètres"
-          title={collapsed ? 'Paramètres' : undefined}
-          aria-current={activePage === 'Paramètres' ? 'page' : undefined}
-          onClick={() => navigate('Paramètres')}
-        >
-          <Icon name="settings" />
-          <span className="sidebar-label">Paramètres</span>
-          {activePage === 'Paramètres' && (
-            <span className="sidebar-selected" aria-hidden="true">●</span>
-          )}
-        </button>
+        <nav aria-label="Compte utilisateur">
+          <ul className="sidebar-list">
+            {visibleItems
+              .filter((item) => item.group === 'Compte')
+              .map(renderItem)}
+          </ul>
+        </nav>
 
         <button
           className="sidebar-item sidebar-logout"
           type="button"
-          aria-label="Se déconnecter"
           title={collapsed ? 'Se déconnecter' : undefined}
-          onClick={onLogout}
+          aria-label="Se déconnecter"
+          onClick={() => navigate('/login', { replace: true })}
         >
           <Icon name="logout" />
           <span className="sidebar-label">Se déconnecter</span>

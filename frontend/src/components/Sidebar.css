@@ -314,3 +314,17 @@
     outline-color: Highlight;
   }
 }
+
+.sidebar-item,
+.sidebar-brand {
+  text-decoration: none;
+}
+
+.sidebar a:focus-visible {
+  outline: 3px solid #fffff0;
+  outline-offset: 3px;
+}
+
+.sidebar-brand:hover {
+  background: #383837;
+}
