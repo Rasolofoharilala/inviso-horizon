@@ -54,8 +54,14 @@
   --color-sidebar-muted: var(--color-mint);
   --color-sidebar-hover: var(--color-green-dark);
   --color-sidebar-active: var(--color-charcoal);
-  --color-login-background: var(--color-mint);
-  --color-login-intro-background: var(--color-green-dark);
+  --color-login-background: var(--color-charcoal);
+  --color-login-intro-background: var(--color-green-hover);
+  --color-login-reading-background: var(--color-cream);
+  --color-login-dark-background: var(--color-charcoal);
+  --color-login-dark-text: var(--color-cream);
+  --color-login-dark-muted: var(--color-mint);
+  --color-login-dark-action: var(--color-mint);
+  --color-login-wave: rgb(255 255 240 / 25%);
   --color-login-intro-text: var(--color-cream);
   --color-login-panel-background: var(--color-cream);
   --color-input-background: var(--color-cream);
