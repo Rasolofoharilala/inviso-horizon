@@ -1,9 +1,13 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import './LoginPage.css'
 import logoLogin from '../assets/logo-login.svg'
+import './LoginPage.css'
 
-export default function LoginPage() {
+type LoginPageProps = {
+  onLogin: () => void
+}
+
+export default function LoginPage({ onLogin }: LoginPageProps) {
   const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
@@ -11,7 +15,16 @@ export default function LoginPage() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setMessage('Formulaire valide. Connexion au serveur à intégrer.')
+
+    if (!identifier.trim() || !password.trim()) {
+      setMessage(
+        'Veuillez renseigner votre identifiant et votre mot de passe.',
+      )
+      return
+    }
+
+    // Parcours de démonstration, sans authentification backend.
+    onLogin()
   }
 
   return (
@@ -26,7 +39,11 @@ export default function LoginPage() {
 
       <section className="login-panel" aria-labelledby="login-heading">
         <div className="login-content">
-         <img src={logoLogin} alt="Horizon" className="login-logo-image" />
+          <img
+            src={logoLogin}
+            alt="Horizon"
+            className="login-logo-image"
+          />
 
           <header className="login-header">
             <h2 id="login-heading">Connectez-vous</h2>
@@ -41,6 +58,8 @@ export default function LoginPage() {
                 name="identifier"
                 type="text"
                 autoComplete="username"
+                autoCapitalize="none"
+                spellCheck={false}
                 value={identifier}
                 onChange={(event) => {
                   setIdentifier(event.target.value)
@@ -72,9 +91,14 @@ export default function LoginPage() {
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(event) => setRememberMe(event.target.checked)}
+                aria-describedby="remember-help"
               />
               <span>Se souvenir de moi</span>
             </label>
+
+            <p id="remember-help" className="login-message">
+              Option disponible après intégration de l’authentification.
+            </p>
 
             <button
               className="login-forgot"

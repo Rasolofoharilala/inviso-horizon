@@ -3,11 +3,11 @@ import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 
 export default function App() {
-  const [showHome, setShowHome] = useState(true)
+  const [showHome, setShowHome] = useState(false)
 
   return showHome ? (
     <HomePage onLogout={() => setShowHome(false)} />
   ) : (
-    <LoginPage />
+    <LoginPage onLogin={() => setShowHome(true)} />
   )
 }
