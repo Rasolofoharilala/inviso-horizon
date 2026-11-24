@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import './HomePage.css'
 import ProductsPage from './ProductsPage'
+import DashboardPage from './DashboardPage'
 
 type HomePageProps = {
   onLogout: () => void
@@ -19,8 +20,10 @@ export default function HomePage({ onLogout }: HomePageProps) {
       />
 
       <main className="home-main">
-       {activePage === 'Données' ? (
+        {activePage === 'Données' ? (
   <ProductsPage />
+) : activePage === 'Vue générale' ? (
+  <DashboardPage />
 ) : (
   <>
     <header className="home-header">
