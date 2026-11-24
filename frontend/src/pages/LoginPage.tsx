@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import './LoginPage.css'
+import logoLogin from '../assets/logo-login.svg'
 
 export default function LoginPage() {
   const [identifier, setIdentifier] = useState('')
@@ -25,9 +26,7 @@ export default function LoginPage() {
 
       <section className="login-panel" aria-labelledby="login-heading">
         <div className="login-content">
-          <a className="horizon-logo" href="/" aria-label="Horizon — accueil">
-            HORIZON
-          </a>
+         <img src={logoLogin} alt="Horizon" className="login-logo-image" />
 
           <header className="login-header">
             <h2 id="login-heading">Connectez-vous</h2>
