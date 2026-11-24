@@ -14,6 +14,8 @@ import LoadingBoundary from './components/LoadingBoundary'
 import PlaceholderPage from './pages/PlaceholderPage'
 import { navigation } from './config/navigation'
 
+const SandboxPage = lazy(() => import('./pages/SandboxPage'))
+
 const HomePage = lazy(() => import('./pages/HomePage'))
 const DashboardPage = lazy(() => import('./pages/DashboardPage'))
 const ProductsPage = lazy(() => import('./pages/ProductsPage'))
@@ -59,6 +61,7 @@ export default function App() {
       <LoadingBoundary>
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
+          <Route path="/sandbox" element={<SandboxPage />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginRoute />} />
           <Route path="/apercu-chargement" element={<LoadingPreview />} />
