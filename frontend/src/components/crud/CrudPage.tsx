@@ -21,6 +21,8 @@ type CrudPageProps = {
   description: string
   fields: CrudField[]
   initialRecords: CrudRecord[]
+  onSave?: (id: string | null, values: Record<string, string>) => Promise<CrudRecord>
+  onDelete?: (id: string) => Promise<void>
 }
 
 export default function CrudPage({
@@ -28,6 +30,8 @@ export default function CrudPage({
   description,
   fields,
   initialRecords,
+  onSave,
+  onDelete,
 }: CrudPageProps) {
   const formId = useId()
   const dialogRef = useRef<HTMLDialogElement>(null)
@@ -40,6 +44,7 @@ export default function CrudPage({
   const [pendingDelete, setPendingDelete] = useState<CrudRecord | null>(null)
   const [message, setMessage] = useState('')
   const [formError, setFormError] = useState('')
+  const [busy, setBusy] = useState(false)
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -65,6 +70,7 @@ export default function CrudPage({
   }
 
   function closeForm() {
+    if (busy) return
     dialogRef.current?.close()
     setFormOpen(false)
     setFormError('')
@@ -88,8 +94,9 @@ export default function CrudPage({
     setFormOpen(true)
   }
 
-  function save(event: FormEvent<HTMLFormElement>) {
+  async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (busy) return
 
     const cleanedValues = Object.fromEntries(
       fields.map((field) => [
@@ -107,41 +114,42 @@ export default function CrudPage({
       return
     }
 
-    if (editingId !== null) {
-      setRecords((current) =>
-        current.map((record) =>
-          record.id === editingId
-            ? { ...record, values: cleanedValues }
-            : record,
-        ),
-      )
-      setMessage('Modification enregistrée.')
-    } else {
-      setRecords((current) => [
-        ...current,
-        {
-          id: crypto.randomUUID(),
-          values: cleanedValues,
-        },
-      ])
-      setMessage('Élément ajouté.')
+    setBusy(true)
+    try {
+      const saved = onSave
+        ? await onSave(editingId, cleanedValues)
+        : { id: editingId ?? crypto.randomUUID(), values: cleanedValues }
+      setRecords((current) => editingId !== null
+        ? current.map((record) => record.id === editingId ? saved : record)
+        : [...current, saved])
+      setMessage(editingId !== null ? 'Modification enregistrée.' : 'Élément ajouté.')
+      dialogRef.current?.close()
+      setFormOpen(false)
+      setFormError('')
+    } catch (error) {
+      setFormError(error instanceof Error ? error.message : 'Enregistrement impossible.')
+    } finally {
+      setBusy(false)
     }
-
-    closeForm()
   }
 
-  function confirmDelete() {
-    if (!pendingDelete) return
-
-    setRecords((current) =>
-      current.filter((record) => record.id !== pendingDelete.id),
-    )
-    setPendingDelete(null)
-    setMessage('Élément supprimé.')
+  async function confirmDelete() {
+    if (!pendingDelete || busy) return
+    setBusy(true)
+    try {
+      await onDelete?.(pendingDelete.id)
+      setRecords((current) => current.filter((record) => record.id !== pendingDelete.id))
+      setPendingDelete(null)
+      setMessage('Élément supprimé.')
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Suppression impossible.')
+    } finally {
+      setBusy(false)
+    }
   }
 
   return (
-    <section className="crud-page" aria-labelledby={`${formId}-title`}>
+    <section aria-busy={busy} className="crud-page" aria-labelledby={`${formId}-title`}>
       <header className="crud-header">
         <div>
           <h1 id={`${formId}-title`}>{title}</h1>
@@ -149,6 +157,7 @@ export default function CrudPage({
         </div>
 
         <button
+          disabled={busy}
           className="crud-button crud-button--primary"
           type="button"
           onClick={openCreate}
@@ -170,7 +179,7 @@ export default function CrudPage({
             event.preventDefault()
             closeForm()
           }}
-          onClose={() => setFormOpen(false)}
+          onClose={() => { if (!busy) setFormOpen(false) }}
         >
           <section className="crud-form-panel">
             <header className="crud-modal-header">
@@ -181,6 +190,7 @@ export default function CrudPage({
               </h2>
 
               <button
+          disabled={busy}
                 className="crud-close"
                 type="button"
                 aria-label="Fermer le formulaire"
@@ -200,6 +210,7 @@ export default function CrudPage({
                     </label>
 
                     <input
+                      disabled={busy}
                       id={`${formId}-${field.key}`}
                       name={field.key}
                       type={field.type ?? 'text'}
@@ -227,6 +238,7 @@ export default function CrudPage({
 
               <div className="crud-actions">
                 <button
+          disabled={busy}
                   className="crud-button"
                   type="button"
                   onClick={closeForm}
@@ -235,6 +247,7 @@ export default function CrudPage({
                 </button>
 
                 <button
+          disabled={busy}
                   className="crud-button crud-button--primary"
                   type="submit"
                 >
@@ -261,6 +274,7 @@ export default function CrudPage({
 
           <div className="crud-actions">
             <button
+          disabled={busy}
               className="crud-button"
               type="button"
               onClick={() => setPendingDelete(null)}
@@ -269,6 +283,7 @@ export default function CrudPage({
             </button>
 
             <button
+          disabled={busy}
               className="crud-button crud-button--danger"
               type="button"
               onClick={confirmDelete}
@@ -290,6 +305,7 @@ export default function CrudPage({
             </label>
 
             <input
+                      disabled={busy}
               className="crud-search"
               id={`${formId}-search`}
               type="search"
@@ -331,6 +347,7 @@ export default function CrudPage({
                   <td>
                     <div className="crud-row-actions">
                       <button
+          disabled={busy}
                         className="crud-button"
                         type="button"
                         aria-label={`Modifier ${recordLabel(record)}`}
@@ -340,6 +357,7 @@ export default function CrudPage({
                       </button>
 
                       <button
+          disabled={busy}
                         className="crud-button crud-button--delete"
                         type="button"
                         aria-label={`Supprimer ${recordLabel(record)}`}

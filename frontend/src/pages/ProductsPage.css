@@ -1,0 +1,7 @@
+.products-api-page { display: grid; gap: 1.5rem; }
+.products-api-connection { padding: 1rem; border: 1px solid currentColor; border-radius: .75rem; }
+.products-api-connection form { display: grid; gap: .75rem; max-width: 34rem; }
+.products-api-connection input { font: inherit; padding: .75rem; border: 1px solid currentColor; border-radius: .375rem; background: transparent; color: inherit; min-width: 0; }
+.products-api-toolbar { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; }
+.products-api-page button:disabled { cursor: wait; }
+.products-api-page :focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
