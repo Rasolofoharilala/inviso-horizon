@@ -34,6 +34,7 @@ services:
         condition: service_healthy
     environment:
       SERVER_PORT: '8080'
+      BUSINESS_DATA_SOURCE: ${BUSINESS_DATA_SOURCE:-postgres}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/horizon
       SPRING_DATASOURCE_USERNAME: horizon
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?Renseigner POSTGRES_PASSWORD

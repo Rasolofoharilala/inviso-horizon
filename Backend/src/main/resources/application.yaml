@@ -1,3 +1,25 @@
 spring:
   application:
-    name: horizon 
+    name: horizon
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/horizon}
+    username: ${SPRING_DATASOURCE_USERNAME:horizon}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 10000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+    clean-disabled: true
+
+horizon:
+  data:
+    # Source des produits ; PostgreSQL reste la base interne d'Horizon.
+    source: ${BUSINESS_DATA_SOURCE:postgres}

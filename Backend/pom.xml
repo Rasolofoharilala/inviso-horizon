@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.inviso</groupId>
-	<artifactId>horizon </artifactId>
+	<artifactId>horizon</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
 	<description/>
