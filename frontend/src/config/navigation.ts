@@ -8,7 +8,7 @@ export type NavigationIcon =
   | 'report'
   | 'settings'
 
-export type PageKey = 'placeholder' | 'dashboard' | 'products'
+export type PageKey = 'placeholder' | 'dashboard' | 'products' | 'lots' | 'lot-history' | 'lot-timeline' | 'lot-evolution'
 
 export type NavigationItem = {
   path: string
@@ -45,13 +45,16 @@ export const navigation: NavigationItem[] = [
     visible: true,
   },
   {
-    path: '/produits',
-    label: 'Données',
-    group: 'Gestion',
+    path: '/lots',
+    label: 'Liste des lots',
+    group: 'Lots',
     icon: 'data',
-    page: 'products',
+    page: 'lots',
     visible: true,
   },
+  { path: '/lots/historique', label: 'Historique des mouvements', group: 'Lots', icon: 'history', page: 'lot-history', visible: true },
+  { path: '/lots/chronologie', label: 'Chronologie', group: 'Lots', icon: 'history', page: 'lot-timeline', visible: true },
+  { path: '/lots/evolution', label: 'Évolution des effectifs', group: 'Lots', icon: 'dashboard', page: 'lot-evolution', visible: true },
   {
     path: '/alertes',
     label: 'Alertes',
@@ -101,4 +104,8 @@ export function getNavigationModules() {
     const items = visible.filter((item) => item.group === group)
     return { id: group, label: group, icon: items[0].icon, items }
   })
+}
+
+export function navigationItemActive(item: NavigationItem, pathname: string) {
+  return item.path === pathname || (item.path === '/lots' && /^\/lots\/\d+\/?$/.test(pathname))
 }

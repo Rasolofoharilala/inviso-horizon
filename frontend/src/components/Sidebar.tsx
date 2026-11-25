@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router'
-import { getNavigationModules } from '../config/navigation'
+import { getNavigationModules, navigationItemActive } from '../config/navigation'
 import type { NavigationItem } from '../config/navigation'
 import './Sidebar.css'
 import { useSession } from '../auth/useSession'
@@ -60,13 +60,15 @@ type SidebarProps = {
 export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
   const { user, logout } = useSession()
   const [logoutError, setLogoutError] = useState('')
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
+  const selectedLot = /^\/lots\/(\d+)\/?$/.exec(pathname)?.[1] ?? new URLSearchParams(search).get('lot')
+  const lotLink = (path: string) => path.startsWith('/lots/') && selectedLot ? `${path}?lot=${encodeURIComponent(selectedLot)}` : path
   const navigate = useNavigate()
   const mobileDialog = useRef<HTMLDialogElement>(null)
   const panelToggle = useRef<HTMLButtonElement>(null)
   const modules = getNavigationModules()
   const activeModule = modules.find((module) =>
-    module.items.some((item) => item.path === pathname),
+    module.items.some((item) => navigationItemActive(item, pathname)),
   )
   const hasPanel = Boolean(activeModule && activeModule.items.length > 1)
   const panelOpen = hasPanel && !collapsed
@@ -75,9 +77,9 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
     return (
       <li key={item.path}>
         <NavLink
-          to={item.path}
+          to={lotLink(item.path)}
           end
-          className={({ isActive }) => `sidebar-page ${isActive ? 'sidebar-page--active' : ''}`}
+          className={({ isActive }) => `sidebar-page ${isActive || navigationItemActive(item, pathname) ? 'sidebar-page--active' : ''}`}
           onClick={() => mobileDialog.current?.close()}
         >
           <Icon name={item.icon} />

@@ -1,0 +1,82 @@
+.lots-page { --lots-ink: #172c21; --lots-muted: #435149; --lots-green: #154a2b; --lots-mint: #e4eee6; --lots-border: #65756a; --lots-danger: #762b22; max-width: 1280px; margin-inline: auto; color: var(--lots-ink); }
+.lots-page h1, .lots-page h2, .lots-page h3, .lots-page p { margin: 0; }
+.lots-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.5rem; }
+.lots-heading .lots-eyebrow { color: var(--lots-green); font-size: .8125rem; font-weight: 850; letter-spacing: .12em; margin-bottom: .75rem; }
+.lots-heading h1 { font-size: clamp(1.75rem, 3vw, 2.75rem); letter-spacing: -.035em; font-weight: 800; margin-bottom: .75rem; }
+.lots-heading p, .lots-list-header p { color: var(--lots-muted); max-width: 64ch; }
+.lots-button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 48px; padding: .625rem 1rem; border: 2px solid var(--lots-green); border-radius: .625rem; background: #fff; color: var(--lots-green); font: inherit; font-size: .9375rem; font-weight: 850; cursor: pointer; line-height: 1.5; }
+.lots-button:hover { background: var(--lots-mint); }
+.lots-button--primary { color: #fff; background: var(--lots-green); }
+.lots-button--primary:hover { color: #fff; background: #103a21; }
+.lots-button--danger { color: var(--lots-danger); border-color: var(--lots-danger); }
+.lots-button--danger:hover { color: var(--lots-danger); background: #fff3ee; }
+.lots-button:disabled { opacity: 1; color: var(--lots-muted); border-color: var(--lots-border); background: var(--lots-mint); cursor: not-allowed; }
+.lots-page :focus-visible { outline: 3px solid var(--lots-green); outline-offset: 4px; box-shadow: 0 0 0 3px #fff; }
+.lots-notice:not(:empty) { padding: 1rem; border: 2px solid var(--lots-green); background: var(--lots-mint); border-radius: .75rem; margin-bottom: 1.5rem; }
+.lots-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin: 0 0 1.5rem; }
+.lots-summary > div { padding: 1.25rem; border: 1px solid var(--lots-border); border-radius: 1rem; background: #fff; }
+.lots-summary dt { font-size: .875rem; font-weight: 800; color: var(--lots-muted); }
+.lots-summary dd { margin: .625rem 0 0; font-family: Manrope, Arial, sans-serif; font-size: clamp(1.5rem, 2.6vw, 2.25rem); font-weight: 800; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.lots-summary .lots-summary-total { color: #fffff0; background: var(--lots-green); border-color: var(--lots-green); }
+.lots-summary-total dt { color: #fffff0; }
+.lots-list { padding: clamp(1rem, 2.5vw, 2rem); background: #fff; border: 1px solid var(--lots-border); border-radius: 1rem; }
+.lots-list-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+.lots-list-header h2 { font-size: 1.375rem; font-weight: 800; margin-bottom: .5rem; }
+.lots-list-header p { font-size: .875rem; }
+.lots-search { display: flex; align-items: end; flex-wrap: wrap; gap: .75rem; margin-bottom: 1.5rem; }
+.lots-search > div { flex: 1 1 260px; max-width: 38rem; min-width: 0; }
+.lots-search label, .lots-fields label { display: block; font-weight: 800; margin-bottom: .375rem; }
+.lots-search input, .lots-fields input { display: block; width: 100%; min-width: 0; min-height: 48px; padding: .625rem .875rem; border: 1px solid var(--lots-border); border-radius: .5rem; background: #fffff0; color: var(--lots-ink); font: inherit; }
+.lots-search input::placeholder { color: var(--lots-muted); opacity: 1; }
+.lots-table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--lots-border); border-radius: .75rem; }
+.lots-table-wrap table { width: 100%; border-collapse: collapse; text-align: left; }
+.lots-table-wrap th, .lots-table-wrap td { padding: 1rem; border-bottom: 1px solid var(--lots-border); vertical-align: middle; }
+.lots-table-wrap thead { color: var(--lots-green); background: var(--lots-mint); font-size: .875rem; }
+.lots-table-wrap tbody tr:last-child > * { border-bottom: 0; }
+.lots-table-wrap tbody tr:hover { background: #fffff0; }
+.lots-table-wrap tbody th { color: var(--lots-green); font-weight: 850; overflow-wrap: anywhere; max-width: 14rem; min-width: 8rem; }
+.lots-table-wrap td:nth-child(2) { min-width: 10rem; max-width: 20rem; overflow-wrap: anywhere; }
+.lots-table-wrap .lots-number { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lots-total { font-weight: 850; }
+.lots-row-actions { display: flex; gap: .5rem; }
+.lots-pagination { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-top: 1.5rem; }
+.lots-pagination p { font-size: .875rem; color: var(--lots-muted); }
+.lots-empty { display: grid; justify-items: center; gap: 1rem; padding: 2.5rem 1rem; background: #fffff0; border: 1px dashed var(--lots-border); border-radius: .75rem; text-align: center; }
+.lots-empty h3 { font-size: 1.25rem; font-weight: 800; }
+.lots-empty p { max-width: 56ch; color: var(--lots-muted); }
+.lots-state { padding: 1rem; }
+.lots-error { padding: 1rem; margin-block: 1rem; border: 2px solid var(--lots-danger); border-radius: .75rem; background: #fff3ee; color: var(--lots-danger); }
+.lots-error .lots-button { margin-top: .75rem; }
+.lots-dialog { width: min(42rem, calc(100% - 2rem)); max-height: calc(100dvh - 3rem); overflow-y: auto; margin: auto; padding: clamp(1.25rem, 3vw, 2rem); border: 2px solid var(--lots-green); border-radius: 1rem; background: #fff; color: var(--lots-ink); }
+.lots-dialog--small { width: min(34rem, calc(100% - 2rem)); }
+.lots-dialog::backdrop { background: rgb(18 33 24 / 70%); }
+.lots-dialog h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: .75rem; }
+.lots-dialog > p { color: var(--lots-muted); margin-bottom: 1.5rem; }
+.lots-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.lots-fields > div { min-width: 0; }
+.lots-field-error { margin-top: .5rem !important; color: var(--lots-danger); font-weight: 800; font-size: .875rem; }
+.lots-preview-total { padding: 1rem; margin-block: 1.5rem !important; border: 1px solid var(--lots-border); background: var(--lots-mint); border-radius: .75rem; color: var(--lots-green); }
+.lots-preview-total strong { font-size: 1.5rem; }
+.lots-preview-total span { display: block; font-size: .875rem; margin-top: .25rem; }
+.lots-dialog-actions { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: flex-end; }
+.lots-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (max-width: 950px) { .lots-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 500px) {
+  .lots-fields, .lots-summary { grid-template-columns: minmax(0, 1fr); }
+  .lots-search > div { flex-basis: 100%; }
+  .lots-heading > .lots-button, .lots-dialog-actions .lots-button { width: 100%; }
+}
+@media (forced-colors: active) { .lots-page :focus-visible { outline-color: Highlight; box-shadow: none; } .lots-button, .lots-summary > div, .lots-dialog { border: 2px solid CanvasText; } }
+
+.lots-date { white-space: nowrap; }
+.lots-date-missing { color: var(--lots-danger); font-weight: 800; }
+.lots-age { min-width: 8rem; white-space: nowrap; }
+.lots-age strong { display: block; color: var(--lots-green); }
+.lots-age span { display: block; color: var(--lots-muted); font-size: .875rem; }
+.lots-age-help { color: var(--lots-muted); font-size: .875rem; margin-top: 1rem !important; max-width: 75ch; }
+.lots-placement-field { margin-bottom: 1.5rem; padding: 1.25rem; border: 1px solid var(--lots-border); border-radius: .75rem; background: #fffff0; }
+.lots-placement-field label { display: block; font-weight: 850; margin-bottom: .5rem; }
+.lots-placement-field > p { color: var(--lots-muted); font-size: .875rem; margin-bottom: .75rem; max-width: 65ch; }
+.lots-placement-field input { display: block; width: 100%; min-height: 48px; padding: .625rem .875rem; border: 1px solid var(--lots-border); border-radius: .5rem; background: #fff; color: var(--lots-ink); font: inherit; }
+.lots-placement-field .lots-age-preview { margin-block: .75rem 0; color: var(--lots-green); }
+.lots-placement-field .lots-field-error { color: var(--lots-danger); }

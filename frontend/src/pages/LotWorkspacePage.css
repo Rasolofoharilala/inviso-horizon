@@ -1,0 +1,43 @@
+.lot-workspace .lots-button { text-decoration: none; }
+.lot-context { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; justify-content: space-between; padding: 1.25rem; border: 1px solid var(--lots-border); border-radius: 1rem; background: #fff; }
+.lot-context > div:first-child { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; }
+.lot-context strong { color: var(--lots-green); font-size: 1.25rem; overflow-wrap: anywhere; }
+.lot-context span { color: var(--lots-muted); }
+.lot-view-nav { display: flex; flex-wrap: wrap; gap: .5rem; padding-block: 1rem; margin-bottom: .5rem; }
+.lot-view-nav a { display: inline-flex; align-items: center; min-height: 48px; padding: .5rem 1rem; border: 2px solid var(--lots-green); border-radius: .625rem; color: var(--lots-green); background: #fff; font-weight: 800; text-underline-offset: .25em; }
+.lot-view-nav a[aria-current="page"] { color: #fff; background: var(--lots-green); text-decoration-thickness: 2px; }
+.lot-workspace-section { margin-top: 1.5rem; }
+.lot-workspace-section > h2 { font-size: 1.375rem; font-weight: 800; margin-bottom: 1rem; }
+.lot-help { color: var(--lots-muted); max-width: 75ch; font-size: .875rem; margin-block: .75rem 1rem !important; }
+.lot-picker-list { display: grid; gap: .75rem; list-style: none; margin: 1rem 0; padding: 0; }
+.lot-picker-list a { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center; justify-content: space-between; min-height: 64px; padding: 1rem; border: 1px solid var(--lots-border); border-radius: .75rem; color: var(--lots-green); background: #fffff0; text-underline-offset: .25em; }
+.lot-picker-list a:hover { background: var(--lots-mint); }
+.lot-range { display: flex; flex-wrap: wrap; align-items: end; gap: 1rem; margin-bottom: 1.25rem; }
+.lot-range label, .lot-workspace .lots-dialog label { display: block; font-weight: 800; margin-bottom: .375rem; }
+.lot-range input, .lot-range select, .lot-workspace .lots-dialog select, .lot-workspace .lots-dialog textarea { display: block; width: 100%; min-height: 48px; padding: .625rem .75rem; border: 1px solid var(--lots-border); border-radius: .5rem; color: var(--lots-ink); background: #fffff0; font: inherit; }
+.lot-workspace .lots-dialog textarea { resize: vertical; min-height: 100px; }
+.lot-reason-label { margin-top: 1.25rem; }
+.lot-chart-legend { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; border: 0; padding: 0; margin-bottom: 1rem; }
+.lot-chart-legend legend { font-weight: 800; margin-bottom: .5rem; }
+.lot-chart-legend label { display: inline-flex; gap: .625rem; align-items: center; min-height: 48px; color: var(--lots-ink); cursor: pointer; }
+.lot-chart-legend input { width: 22px; height: 22px; accent-color: var(--lots-green); }
+.lot-line { width: 32px; border-top: 3px solid var(--lots-green); }
+.lot-line--female { border-color: var(--lots-danger); border-top-style: dashed; }
+.lot-chart-scroll { overflow-x: auto; border: 1px solid var(--lots-border); border-radius: .75rem; background: #fff; }
+.lot-chart-scroll svg { display: block; width: 100%; min-width: 650px; height: auto; }
+.lot-chart-values { margin-top: 1rem; }
+.lot-chart-values summary { min-height: 48px; padding: .75rem; color: var(--lots-green); font-weight: 850; cursor: pointer; text-decoration: underline; text-underline-offset: .25em; }
+.lot-timeline { list-style: none; padding-left: 1.5rem; border-left: 3px solid var(--lots-green); margin: 1.5rem .25rem 0; }
+.lot-timeline > li { position: relative; padding: 1.25rem; border: 1px solid var(--lots-border); border-radius: .75rem; margin-bottom: 1rem; background: #fffff0; }
+.lot-timeline > li::before { content: ''; position: absolute; left: -2.125rem; top: 1.5rem; width: 16px; height: 16px; border: 3px solid var(--lots-green); border-radius: 50%; background: #fff; }
+.lot-event-label { display: block; font-size: .8125rem; color: var(--lots-green); font-weight: 850; letter-spacing: .06em; margin-bottom: .5rem; }
+.lot-timeline h3 { font-size: 1.125rem; font-weight: 800; margin-bottom: .5rem; }
+.lot-timeline p { margin-bottom: .5rem; overflow-wrap: anywhere; }
+.lot-timeline .lot-timeline-opening { background: var(--lots-mint); }
+.lot-timeline .lot-event-cancelled { border-style: dashed; }
+.lot-cancellation { display: block; color: var(--lots-danger); font-size: .875rem; font-weight: 800; margin-top: .5rem !important; }
+.lot-workspace small { display: block; color: var(--lots-muted); margin-top: .5rem; }
+.lot-workspace table td { max-width: 24rem; overflow-wrap: anywhere; }
+.lots-placement-warning { color: var(--lots-danger); padding: 1rem; border: 1px solid var(--lots-danger); border-radius: .5rem; margin-bottom: 1rem !important; }
+@media (max-width: 550px) { .lot-context .lots-row-actions { flex-wrap: wrap; } .lot-view-nav a { flex: 1 1 45%; } .lot-range > div { width: 100%; } }
+@media (forced-colors: active) { .lot-line, .lot-line--female { border-color: CanvasText; } .lot-chart-scroll svg polyline { stroke: CanvasText; } .lot-view-nav a[aria-current="page"] { outline: 3px solid Highlight; } }

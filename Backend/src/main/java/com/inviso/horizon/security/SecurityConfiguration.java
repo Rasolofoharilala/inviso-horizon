@@ -24,6 +24,11 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST, "/api/products").hasAnyRole("ADMIN", "EDITOR")
                 .requestMatchers(HttpMethod.PUT, "/api/products/**").hasAnyRole("ADMIN", "EDITOR")
                 .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/lots", "/api/lots/**").hasAnyRole("ADMIN", "EDITOR", "VIEWER")
+                .requestMatchers(HttpMethod.POST, "/api/lots/*/movements/*/cancel").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/lots", "/api/lots/**").hasAnyRole("ADMIN", "EDITOR")
+                .requestMatchers(HttpMethod.PUT, "/api/lots/**").hasAnyRole("ADMIN", "EDITOR")
+                .requestMatchers(HttpMethod.DELETE, "/api/lots/**").hasRole("ADMIN")
                 .anyRequest().hasAnyRole("ADMIN", "EDITOR", "VIEWER"))
             .exceptionHandling(errors -> errors
                 .authenticationEntryPoint((request, response, exception) -> {

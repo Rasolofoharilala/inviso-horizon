@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import Sidebar from '../components/Sidebar'
-import { getNavigationModules, navigation } from '../config/navigation'
+import { getNavigationModules, navigation, navigationItemActive } from '../config/navigation'
 import './HomePage.css'
 
 function PageSkeleton() {
@@ -34,11 +34,11 @@ export default function HomePage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const mainRef = useRef<HTMLElement>(null)
   const { pathname } = useLocation()
-  const activeModule = getNavigationModules().find((module) => module.items.some((item) => item.path === pathname))
+  const activeModule = getNavigationModules().find((module) => module.items.some((item) => navigationItemActive(item, pathname)))
   const panelOpen = Boolean(activeModule && activeModule.items.length > 1 && !sidebarCollapsed)
 
   useEffect(() => {
-    const page = navigation.find((item) => item.path === pathname)
+    const page = navigation.find((item) => navigationItemActive(item, pathname))
     document.title = `${page?.label ?? 'Page introuvable'} — Horizon`
 
     mainRef.current?.scrollTo(0, 0)

@@ -20,6 +20,8 @@ const SandboxPage = lazy(() => import('./pages/SandboxPage'))
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 const DashboardPage = lazy(() => import('./pages/DashboardPage'))
+const LotWorkspacePage = lazy(() => import('./pages/LotWorkspacePage'))
+const LotsPage = lazy(() => import('./pages/LotsPage'))
 const ProductsPage = lazy(() => import('./pages/ProductsPage'))
 
 function LoginRoute() {
@@ -65,6 +67,7 @@ export default function App() {
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
           <Route element={<RequireSession />}>
+          <Route path="/produits" element={<Navigate to="/lots" replace />} />
           <Route path="/sandbox" element={<SandboxPage />} />
           <Route path="/apercu-chargement" element={<LoadingPreview />} />
 
@@ -74,7 +77,7 @@ export default function App() {
                 key={item.path}
                 path={item.path}
                 element={
-                  item.path === '/parametres' ? (<ProfilePage />) : item.page === 'dashboard' ? (
+                  item.page === 'lot-history' ? (<LotWorkspacePage view="history" />) : item.page === 'lot-timeline' ? (<LotWorkspacePage view="timeline" />) : item.page === 'lot-evolution' ? (<LotWorkspacePage view="evolution" />) : item.page === 'lots' ? (<LotsPage />) : item.path === '/parametres' ? (<ProfilePage />) : item.page === 'dashboard' ? (
                     <DashboardPage />
                   ) : item.page === 'products' ? (
                     <ProductsPage />
@@ -85,6 +88,7 @@ export default function App() {
               />
             ))}
 
+            <Route path="/lots/:lotId" element={<LotWorkspacePage view="overview" />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
           </Route>

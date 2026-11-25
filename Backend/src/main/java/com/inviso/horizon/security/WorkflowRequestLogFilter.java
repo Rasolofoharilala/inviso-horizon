@@ -17,6 +17,11 @@ final class WorkflowRequestLogFilter extends OncePerRequestFilter {
         // Ne jamais enregistrer de query string ou de segments libres envoyés par le client.
         if (uri.matches("/api/auth/(login|logout|me)")) return uri;
         if (uri.equals("/api/csrf")) return uri;
+        if (uri.matches("/api/lots/[^/]+/movements/[^/]+/cancel")) return "/api/lots/{id}/movements/{movementId}/cancel";
+        if (uri.matches("/api/lots/[^/]+/movements")) return "/api/lots/{id}/movements";
+        if (uri.matches("/api/lots/[^/]+/evolution")) return "/api/lots/{id}/evolution";
+        if (uri.equals("/api/lots")) return uri;
+        if (uri.matches("/api/lots/[^/]+")) return "/api/lots/{id}";
         if (uri.equals("/api/products")) return uri;
         if (uri.matches("/api/products/[^/]+")) return "/api/products/{id}";
         if (uri.equals("/api/profile/photos")) return uri;
