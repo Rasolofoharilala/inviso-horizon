@@ -1,9 +1,10 @@
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router'
 import { getNavigationModules } from '../config/navigation'
 import type { NavigationItem } from '../config/navigation'
 import './Sidebar.css'
+import { useSession } from '../auth/useSession'
 
 type IconName =
   | 'home'
@@ -57,6 +58,8 @@ type SidebarProps = {
 }
 
 export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
+  const { user, logout } = useSession()
+  const [logoutError, setLogoutError] = useState('')
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const mobileDialog = useRef<HTMLDialogElement>(null)
@@ -145,13 +148,16 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
         )}
 
         <div className="rail-footer">
-          <div className="rail-profile" title="Utilisateur 1" aria-label="Utilisateur 1">U</div>
+          <Link to="/parametres" className="rail-profile" title={user?.username} aria-label={`Profil de ${user?.username}`}>
+            {user?.avatarUrl ? <img src={user.avatarUrl} alt="" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} /> : user?.username.charAt(0).toUpperCase()}
+          </Link>
+          {logoutError && <span role="alert">{logoutError}</span>}
           {modules.filter((module) => module.id === 'Compte').map((module) => (
             <Link key={module.id} to={module.items[0].path} className={`rail-control ${activeModule?.id === module.id ? 'rail-control--active' : ''}`} aria-label={module.label} title={module.label}>
               <Icon name="settings" />
             </Link>
           ))}
-          <button className="rail-control rail-logout" type="button" aria-label="Se déconnecter" title="Se déconnecter" onClick={() => navigate('/login', { replace: true })}>
+          <button className="rail-control rail-logout" type="button" aria-label="Se déconnecter" title="Se déconnecter" onClick={async () => { try { await logout(); navigate('/login', { replace: true }) } catch { setLogoutError('Déconnexion impossible. Réessayez.') } }}>
             <Icon name="logout" />
           </button>
         </div>

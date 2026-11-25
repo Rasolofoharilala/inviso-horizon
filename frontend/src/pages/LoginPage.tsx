@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useSession } from '../auth/useSession'
 import logoLogin from '../assets/logo-login.svg'
 import logoLight from '../assets/logo-navbar.svg'
 import './LoginPage.css'
@@ -8,6 +9,8 @@ type LoginPageProps = { onLogin: () => void }
 type FieldErrors = { identifier?: string; password?: string }
 
 export default function LoginPage({ onLogin }: LoginPageProps) {
+  const { login } = useSession()
+  const [busy, setBusy] = useState(false)
   const [appearance, setAppearance] = useState('standard')
   const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
@@ -21,8 +24,9 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
     document.title = 'Connexion — Horizon'
   }, [])
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (busy) return
     const nextErrors: FieldErrors = {}
     if (!identifier.trim()) nextErrors.identifier = 'Renseignez votre identifiant.'
     if (!password.trim()) nextErrors.password = 'Renseignez votre mot de passe.'
@@ -36,8 +40,14 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
       passwordRef.current?.focus()
       return
     }
-    // Démonstration uniquement : aucune vérification serveur ni conservation du mot de passe.
-    onLogin()
+    setBusy(true)
+    try {
+      await login(identifier.trim(), password)
+      setPassword('')
+      onLogin()
+    } catch (reason) {
+      setMessage(reason instanceof Error ? reason.message : 'Connexion impossible.')
+    } finally { setBusy(false) }
   }
 
   function showHelp() {
@@ -143,7 +153,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
               </div>
 
               <button className="login-forgot" type="button" onClick={showHelp}>Besoin d’aide ?</button>
-              <button className="login-submit" type="submit">Se connecter <span aria-hidden="true">→</span></button>
+              <button className="login-submit" type="submit" disabled={busy}>{busy ? 'Connexion…' : 'Se connecter'} <span aria-hidden="true">→</span></button>
               <p className="login-message" role="status">{message}</p>
             </form>
             <p className="login-access-help">Besoin d’un accès ?<br /><button type="button" onClick={showHelp}>Contactez votre administrateur.</button></p>

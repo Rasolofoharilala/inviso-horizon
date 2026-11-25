@@ -21,6 +21,8 @@ type CrudPageProps = {
   description: string
   fields: CrudField[]
   initialRecords: CrudRecord[]
+  canEdit?: boolean
+  canDelete?: boolean
   onSave?: (id: string | null, values: Record<string, string>) => Promise<CrudRecord>
   onDelete?: (id: string) => Promise<void>
 }
@@ -30,6 +32,8 @@ export default function CrudPage({
   description,
   fields,
   initialRecords,
+  canEdit = true,
+  canDelete = true,
   onSave,
   onDelete,
 }: CrudPageProps) {
@@ -157,9 +161,9 @@ export default function CrudPage({
         </div>
 
         <button
-          disabled={busy}
           className="crud-button crud-button--primary"
           type="button"
+          disabled={busy || !canEdit}
           onClick={openCreate}
         >
           + Ajouter
@@ -347,19 +351,19 @@ export default function CrudPage({
                   <td>
                     <div className="crud-row-actions">
                       <button
-          disabled={busy}
                         className="crud-button"
                         type="button"
                         aria-label={`Modifier ${recordLabel(record)}`}
+                        disabled={busy || !canEdit}
                         onClick={() => openEdit(record)}
                       >
                         Modifier
                       </button>
 
                       <button
-          disabled={busy}
                         className="crud-button crud-button--delete"
                         type="button"
+                        disabled={busy || !canDelete}
                         aria-label={`Supprimer ${recordLabel(record)}`}
                         onClick={() => {
                           setMessage('')

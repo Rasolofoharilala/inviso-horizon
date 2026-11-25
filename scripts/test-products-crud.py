@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Test réel : crée, lit, modifie puis supprime un produit temporaire PostgreSQL."""
-import base64
 import getpass
 import http.cookiejar
 import json
@@ -18,7 +17,6 @@ def main():
         raise ValueError("Adresse HTTP(S) requise")
     username = input("Identifiant backend [user] : ").strip() or "user"
     password = getpass.getpass("Mot de passe backend : ")
-    auth = "Basic " + base64.b64encode(f"{username}:{password}".encode()).decode()
     opener = urllib.request.build_opener(
         urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
     # Ne jamais transmettre les identifiants vers une destination de redirection.
@@ -29,7 +27,7 @@ def main():
     csrf = {}
 
     def request(method, path, body=None):
-        headers = {"Authorization": auth, "Accept": "application/json"}
+        headers = {"Accept": "application/json"}
         if body is not None:
             headers["Content-Type"] = "application/json"
         if method not in ("GET", "HEAD"):
@@ -43,6 +41,13 @@ def main():
     status, csrf = request("GET", "/api/csrf")
     if status != 200 or not csrf.get("token"):
         raise RuntimeError("Jeton CSRF indisponible")
+    form = urllib.parse.urlencode({"username": username, "password": password}).encode()
+    login = urllib.request.Request(base + "/api/auth/login", data=form,
+        headers={"Content-Type": "application/x-www-form-urlencoded", csrf["headerName"]: csrf["token"]})
+    with opener.open(login, timeout=20) as response:
+        assert response.status == 204
+    password = None
+    status, csrf = request("GET", "/api/csrf")
     status, listing = request("GET", "/api/products?page=0&size=20")
     if listing.get("source") != "postgres":
         raise RuntimeError("Ce test exige BUSINESS_DATA_SOURCE=postgres")

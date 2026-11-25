@@ -36,6 +36,10 @@ services:
         condition: service_healthy
     environment:
       SERVER_PORT: "8080"
+      SERVER_FORWARD_HEADERS_STRATEGY: framework
+      SERVER_SERVLET_SESSION_COOKIE_HTTP_ONLY: "true"
+      SERVER_SERVLET_SESSION_COOKIE_SAME_SITE: lax
+
       BUSINESS_DATA_SOURCE: ${BUSINESS_DATA_SOURCE:-postgres}
 
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/horizon
@@ -49,12 +53,21 @@ services:
       SPRING_JPA_OPEN_IN_VIEW: "false"
       SPRING_FLYWAY_ENABLED: "true"
 
-      SPRING_SECURITY_USER_NAME: ${BACKEND_DEV_USERNAME:?Identifiant backend manquant}
-      SPRING_SECURITY_USER_PASSWORD: ${BACKEND_DEV_PASSWORD:?Mot de passe backend manquant}
+      HORIZON_IMAGES_DIRECTORY: /app/images
+      SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: 2MB
+      SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: 3MB
+
+      HORIZON_DEV_USERS_ENABLED: ${DEV_USERS_ENABLED:-false}
+      HORIZON_DEV_USERS_ADMIN_PASSWORD: ${DEV_ADMIN_PASSWORD:-}
+      HORIZON_DEV_USERS_EDITEUR_PASSWORD: ${DEV_EDITOR_PASSWORD:-}
+      HORIZON_DEV_USERS_LECTEUR_PASSWORD: ${DEV_VIEWER_PASSWORD:-}
+      HORIZON_DEV_USERS_RESTREINT_PASSWORD: ${DEV_RESTRICTED_PASSWORD:-}
 
       MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: health,info
       MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: never
       JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=60.0 -XX:+ExitOnOutOfMemoryError"
+    volumes:
+      - profile_images:/app/images
     mem_limit: 1g
     stop_grace_period: 30s
     logging:
@@ -83,3 +96,4 @@ services:
 
 volumes:
   postgres_data:
+  profile_images:

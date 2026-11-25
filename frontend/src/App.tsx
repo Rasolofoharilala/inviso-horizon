@@ -8,6 +8,8 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router'
+import { SessionProvider, RequireSession } from './auth/Session'
+import ProfilePage from './pages/ProfilePage'
 import LoginPage from './pages/LoginPage'
 import LoadingScreen from './components/LoadingScreen'
 import LoadingBoundary from './components/LoadingBoundary'
@@ -58,12 +60,12 @@ function NotFoundPage() {
 export default function App() {
   return (
     <BrowserRouter>
+      <SessionProvider>
       <LoadingBoundary>
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
+          <Route element={<RequireSession />}>
           <Route path="/sandbox" element={<SandboxPage />} />
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/login" element={<LoginRoute />} />
           <Route path="/apercu-chargement" element={<LoadingPreview />} />
 
           <Route element={<HomePage />}>
@@ -72,7 +74,7 @@ export default function App() {
                 key={item.path}
                 path={item.path}
                 element={
-                  item.page === 'dashboard' ? (
+                  item.path === '/parametres' ? (<ProfilePage />) : item.page === 'dashboard' ? (
                     <DashboardPage />
                   ) : item.page === 'products' ? (
                     <ProductsPage />
@@ -85,9 +87,13 @@ export default function App() {
 
             <Route path="*" element={<NotFoundPage />} />
           </Route>
+          </Route>
+          <Route path="/" element={<Navigate to="/accueil" replace />} />
+          <Route path="/login" element={<LoginRoute />} />
         </Routes>
       </Suspense>
       </LoadingBoundary>
+    </SessionProvider>
     </BrowserRouter>
   )
 }
