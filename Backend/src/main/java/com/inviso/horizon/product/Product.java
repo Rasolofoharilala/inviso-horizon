@@ -29,6 +29,15 @@ public class Product {
 
     protected Product() { }
 
+    public Product(ProductInput input) { replaceWith(input); }
+
+    public void replaceWith(ProductInput input) {
+        reference = input.reference();
+        name = input.name();
+        category = input.category();
+        price = input.price();
+    }
+
     public Long getId() { return id; }
     public String getReference() { return reference; }
     public String getName() { return name; }

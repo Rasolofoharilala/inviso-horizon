@@ -14,4 +14,12 @@ public class SageX3ProductDataSource implements ProductDataSource {
         // Remplacer ici après validation de l'API REST/SOAP et de son mapping.
         throw new SageX3UnavailableException();
     }
+    @Override
+    public ProductView findById(String id) { throw new SageX3UnavailableException(); }
+    @Override
+    public ProductView create(ProductInput input) { throw new SageX3UnavailableException(); }
+    @Override
+    public ProductView update(String id, ProductInput input) { throw new SageX3UnavailableException(); }
+    @Override
+    public void delete(String id) { throw new SageX3UnavailableException(); }
 }

@@ -47,6 +47,10 @@ class ProductServiceTest {
     }
 
     private static class PostgresStub implements ProductDataSource {
+        public ProductView findById(String id) { throw new AssertionError(); }
+        public ProductView create(ProductInput input) { throw new AssertionError(); }
+        public ProductView update(String id, ProductInput input) { throw new AssertionError(); }
+        public void delete(String id) { throw new AssertionError(); }
         public BusinessSource source() { return BusinessSource.POSTGRES; }
         public ProductPage findAll(int page, int size) { throw new AssertionError("Ne doit pas être appelé"); }
     }

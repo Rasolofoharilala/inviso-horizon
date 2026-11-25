@@ -26,4 +26,8 @@ public class ProductService {
         }
         return adapter.findAll(page, size);
     }
+    public ProductView findById(String id) { return adapter.findById(id); }
+    public ProductView create(ProductInput input) { return adapter.create(input); }
+    public ProductView update(String id, ProductInput input) { return adapter.update(id, input); }
+    public void delete(String id) { adapter.delete(id); }
 }
